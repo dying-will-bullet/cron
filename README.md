@@ -1,4 +1,4 @@
-# cron
+# cron ⌛
 
 Create a project using this template and run following command to replace project name.
 
