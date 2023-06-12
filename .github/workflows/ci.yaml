@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  schedule:
+    - cron: "0 9 * * *"
   push:
     branches: ["master"]
   pull_request:
@@ -25,3 +27,5 @@ jobs:
         run: zig build --verbose
       - name: Run Tests
         run: zig build test
+      - name: Run Fuzz Tests
+        run: cd ./fuzz && bash setup.sh && python gen.py && zig build run-fuzz
