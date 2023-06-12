@@ -36,6 +36,11 @@ pub fn build(b: *std.Build) void {
     // running `zig build`).
     b.installArtifact(lib);
 
+    _ = b.addModule("cron", .{
+        .source_file = .{ .path = "src/lib.zig" },
+        .dependencies = &.{.{ .name = "datetime", .module = datetime_module }},
+    });
+
     // Creates a step for unit testing. This only builds the test executable
     // but does not run it.
     const main_tests = b.addTest(.{
