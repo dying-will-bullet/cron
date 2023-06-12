@@ -11,8 +11,10 @@ const FieldTag = @import("./expr.zig").FieldTag;
 // TODO: optimize this data structure
 const BitSet = std.bit_set.IntegerBitSet(130);
 
+const LEN = 48;
+
 pub const Cron = struct {
-    buf: [32]u8,
+    buf: [LEN]u8,
     expr: CronExpr,
 
     const Self = @This();
@@ -25,7 +27,7 @@ pub const Cron = struct {
     }
 
     pub fn parse(self: *Self, input: []const u8) !void {
-        var buf_: [32]u8 = undefined;
+        var buf_: [LEN]u8 = undefined;
         const lower_input = std.ascii.lowerString(&buf_, input);
         const cron_expr = self.convertAlias(lower_input);
 

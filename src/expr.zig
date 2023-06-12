@@ -164,7 +164,7 @@ pub const CronField = struct {
             start = try Self.getValue(tag, entry[0..i], range_start, end_limit);
             end = try Self.getValue(tag, entry[i + 1 ..], range_start, end_limit);
             // Allow "sat-sun"
-            if (tag == .DAY_OFFSET or tag == .WEEK_OFFSET and end == 0) {
+            if ((tag == .DAY_OFFSET or tag == .WEEK_OFFSET) and end == 0) {
                 end = 7;
             }
         } else if (std.mem.eql(u8, entry, "*")) {
