@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: goto-bus-stop/setup-zig@v2
-      - uses: Hanaasagi/zig-action-cache@v1.1.1
+      - uses: Hanaasagi/zig-action-cache@v1.1.2
         with:
           cache-on-failure: true
       - run: zig version
