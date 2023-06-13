@@ -4,7 +4,7 @@ const pkg_name = "cron";
 const pkg_path = "../src/lib.zig";
 
 const examples = .{
-    "default",
+    "scheduler",
 };
 
 pub fn build(b: *std.build.Builder) void {
@@ -23,10 +23,17 @@ pub fn build(b: *std.build.Builder) void {
             .target = target,
             .optimize = optimize,
         });
+
+        const datetime_module = b.addModule("datetime", .{
+            .source_file = .{ .path = "../deps/zig-datetime/src/main.zig" },
+        });
+
         const mod = b.addModule("cron", .{
             .source_file = .{ .path = "../src/lib.zig" },
+            .dependencies = &.{.{ .name = "datetime", .module = datetime_module }},
         });
         exe.addModule("cron", mod);
+        exe.addModule("datetime", datetime_module);
 
         b.installArtifact(exe);
 
