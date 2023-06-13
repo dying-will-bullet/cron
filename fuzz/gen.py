@@ -77,6 +77,7 @@ def gen_fixture(count=1000) -> List[Tuple[str, datetime]]:
     fixtures = []
     i = 0
     while i < count:
+        # Cannot guarantee that randomly generated values are valid cron expressions.
         try:
             expr = RandomCron().to_str()
             if len(expr) > 32:
@@ -84,6 +85,10 @@ def gen_fixture(count=1000) -> List[Tuple[str, datetime]]:
             c = CronTab(expr)
             expect = c.next(now=now, default_utc=True, return_datetime=True)
         except Exception:
+            continue
+
+        # Unable to find the next time.
+        if expect is None:
             continue
 
         fixtures.append((expr, expect))
