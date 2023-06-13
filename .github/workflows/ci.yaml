@@ -2,7 +2,8 @@ name: CI
 
 on:
   schedule:
-    - cron: "0 9 * * *"
+    # At every 17th minute past every 9th hour.
+    - cron: "*/17 */9 * * *"
   push:
     branches: ["master"]
   pull_request:
