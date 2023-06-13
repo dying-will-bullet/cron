@@ -236,3 +236,23 @@ test "test getLastDayOfMonth" {
     try testing.expect(ndt.date.month == 2);
     try testing.expect(ndt.date.day == 29);
 }
+
+test "test next next next" {
+    var buf: [64]u8 = undefined;
+    const dt = try datetime.Datetime.create(2023, 6, 13, 3, 46, 43, 218000000, null);
+
+    var cron = Cron.init();
+    try cron.parse("*/1 * * * *");
+    const next_dt = try cron.next(dt);
+
+    var res = try formatDatetime(&buf, next_dt);
+    try testing.expectEqualStrings("2023-06-13 03:47:00", res);
+
+    const next_next_dt = try cron.next(next_dt);
+    res = try formatDatetime(&buf, next_next_dt);
+    try testing.expectEqualStrings("2023-06-13 03:48:00", res);
+
+    const next_next_next_dt = try cron.next(next_next_dt);
+    res = try formatDatetime(&buf, next_next_next_dt);
+    try testing.expectEqualStrings("2023-06-13 03:49:00", res);
+}
