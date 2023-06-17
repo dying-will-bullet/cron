@@ -19,7 +19,22 @@ This library aims to provide a way to parse crontab schedule entries and determi
 | Day of week  | Yes       | 0-6 or SUN-SAT  | N/A           | \* / , - ? L               |
 | Year         | No        | 1970-2099       | \*            | \* / , -                   |
 
-_W and # symbols are not supported._
+_W and # symbols are **not** supported._
+
+If your cron entry has 5 values, minutes-day of week are used, default seconds is and default year is appended.
+If your cron entry has 6 values, minutes-year are used, and default seconds are prepended.
+As such, only 5-7 value crontab entries are accepted (and mangled to 7 values, as necessary).
+
+This library also supports the convenient aliases:
+
+- @yearly
+- @annually
+- @monthly
+- @weekly
+- @daily
+- @hourly
+
+To learn more about cron, visit [crontab.guru](https://crontab.guru/).
 
 ## Examples
 
@@ -62,7 +77,7 @@ pub fn main() !void {
 
 ## API
 
-### `parse(self: *Self, input: []const u8) !void`
+### `parse(input: []const u8) !void`
 
 - Params:
   - `input`: The cron string to parse.
