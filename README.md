@@ -60,6 +60,26 @@ pub fn main() !void {
 }
 ```
 
+## API
+
+### `parse(self: *Self, input: []const u8) !void`
+
+- Params:
+  - `input`: The cron string to parse.
+- Returns: void.
+
+### `next(now: datetime.Datetime) !datetime.Datetime`
+
+- Params:
+  - `now`: It will use this datetime as the starting for calculations.
+- Returns: next execution datetime.
+
+### `previous(now: datetime.Datetime) !datetime.Datetime`
+
+- Params:
+  - `now`: It will use this datetime as the starting for calculations.
+- Returns: previous execution datetime.
+
 ## LICENSE
 
 MIT License Copyright (c) 2023, Hanaasagi
