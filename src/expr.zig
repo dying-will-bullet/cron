@@ -146,7 +146,7 @@ pub const CronField = struct {
 
         // validate
         const num = try std.fmt.parseInt(u16, text, 10);
-        if (@intCast(u16, num) < start or @intCast(u16, num) > end) {
+        if (@as(u16, @intCast(num)) < start or @as(u16, @intCast(num)) > end) {
             log.err("ValueOutOfRange: value {d} is out of range [{d}, {d}]", .{ num, start, end });
             return Error.ValueOutOfRange;
         }

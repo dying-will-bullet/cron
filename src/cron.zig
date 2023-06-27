@@ -158,7 +158,7 @@ pub const Cron = struct {
 
     pub fn next(self: *Self, now: datetime.Datetime) !datetime.Datetime {
         // reset nanoseconds
-        var future = now.shift(.{ .nanoseconds = -@intCast(i32, now.time.nanosecond) }).shiftSeconds(1);
+        var future = now.shift(.{ .nanoseconds = -@as(i32, @intCast(now.time.nanosecond)) }).shiftSeconds(1);
 
         var to_test: u3 = 7;
         while (to_test > 0) {
@@ -223,7 +223,7 @@ pub const Cron = struct {
 
     pub fn previous(self: *Self, now: datetime.Datetime) !datetime.Datetime {
         // reset nanoseconds
-        var future = now.shift(.{ .nanoseconds = -@intCast(i32, now.time.nanosecond) }).shiftSeconds(-1);
+        var future = now.shift(.{ .nanoseconds = -@as(i32, @intCast(now.time.nanosecond)) }).shiftSeconds(-1);
 
         var to_test: u3 = 7;
         while (to_test > 0) {
