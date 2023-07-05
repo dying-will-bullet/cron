@@ -24,7 +24,7 @@ pub fn main() !void {
         const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
 
         // wait next
-        std.time.sleep(@intCast(u64, nanos));
+        std.time.sleep(@as(u64, @intCast(nanos)));
 
         try job1(i + 1);
     }
