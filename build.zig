@@ -60,7 +60,7 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&run_main_tests.step);
 
-    // Build exampls
+    // Build examples
     inline for (examples) |e| {
         const example_path = "examples/" ++ e ++ "/main.zig";
         const exe_name = "example-" ++ e;
