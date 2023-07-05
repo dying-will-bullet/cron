@@ -25,10 +25,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const datetime_module = b.addModule("datetime", .{
-        .source_file = .{ .path = "deps/zig-datetime/src/main.zig" },
-    });
-
+    const opts = .{ .target = target, .optimize = optimize };
+    const datetime_module = b.dependency("datetime", opts).module("zig-datetime");
     lib.addModule("datetime", datetime_module);
 
     // This declares intent for the library to be installed into the standard
