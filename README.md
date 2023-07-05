@@ -68,11 +68,62 @@ pub fn main() !void {
         const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
 
         // wait next
-        std.time.sleep(@intCast(u64, nanos));
+        std.time.sleep(@intCast(nanos));
 
         try job1(i + 1);
     }
 }
+```
+
+## Installation
+
+Because `cron` needs to be used together with `datetime`, you need to add both of the following dependencies in `build.zig.zon`:
+
+```
+.{
+    .name = "my-project",
+    .version = "0.1.0",
+    .dependencies = .{
+       .cron = .{
+           .url = "https://github.com/dying-will-bullet/cron/archive/refs/tags/v0.2.0.tar.gz",
+           .hash = "1220f3f1e6659f434657452f4727889a2424c1b78ac88775bd1f036858a1e974ad41",
+       },
+       .datetime = .{
+           .url = "https://github.com/frmdstryr/zig-datetime/archive/ddecb4e508e99ad6ab1314378225413959d54756.tar.gz",
+           .hash = "12202cbb909feb6b09164ac997307c6b1ab35cb05a846198cf41f7ec608d842c1761",
+       }
+    },
+}
+```
+
+Add them in `build.zig`:
+
+```diff
+diff --git a/build.zig b/build.zig
+index 60fb4c2..0255ef3 100644
+--- a/build.zig
++++ b/build.zig
+@@ -15,6 +15,9 @@ pub fn build(b: *std.Build) void {
+     // set a preferred release mode, allowing the user to decide how to optimize.
+     const optimize = b.standardOptimizeOption(.{});
+
++    const opts = .{ .target = target, .optimize = optimize };
++    const cron_module = b.dependency("cron", opts).module("cron");
++    const datetime_module = b.dependency("datetime", opts).module("zig-datetime");
++
+     const exe = b.addExecutable(.{
+         .name = "m",
+         // In this case the main source file is merely a path, however, in more
+@@ -23,6 +26,7 @@ pub fn build(b: *std.Build) void {
+         .target = target,
+         .optimize = optimize,
+     });
++    exe.addModule("cron", cron_module);
++    exe.addModule("datetime", datetime_module);
+
+
+     // This declares intent for the executable to be installed into the
+     // standard location when the user invokes the "install" step (the default
 ```
 
 ## API
