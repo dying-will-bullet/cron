@@ -1,3 +1,0 @@
-[submodule "deps/zig-datetime"]
-	path = deps/zig-datetime
-	url = https://github.com/frmdstryr/zig-datetime.git
