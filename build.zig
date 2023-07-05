@@ -64,7 +64,7 @@ pub fn build(b: *std.Build) void {
     inline for (examples) |e| {
         const example_path = "examples/" ++ e ++ "/main.zig";
         const exe_name = "example-" ++ e;
-        const run_name = "run-" ++ e;
+        const run_name = "run-example-" ++ e;
         const run_desc = "Run the " ++ e ++ " example";
 
         const exe = b.addExecutable(.{
@@ -85,4 +85,21 @@ pub fn build(b: *std.Build) void {
         const run_step = b.step(run_name, run_desc);
         run_step.dependOn(&run_cmd.step);
     }
+
+    // Build fuzz
+    const fuzz_exe = b.addExecutable(.{
+        .name = "fuzz",
+        .root_source_file = .{ .path = "./fuzz/fuzz.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    fuzz_exe.addModule("cron", mod);
+    fuzz_exe.addModule("datetime", datetime_module);
+
+    b.installArtifact(fuzz_exe);
+
+    const run_fuzz_cmd = b.addRunArtifact(fuzz_exe);
+    run_fuzz_cmd.step.dependOn(b.getInstallStep());
+    const run_step = b.step("run-fuzz", "Run fuzz tests");
+    run_step.dependOn(&run_fuzz_cmd.step);
 }

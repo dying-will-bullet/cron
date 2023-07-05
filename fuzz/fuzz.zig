@@ -31,7 +31,7 @@ fn strToDatetime(buf: []u8) !datetime.Datetime {
 
 fn getNow() !datetime.Datetime {
     var buf: [64]u8 = undefined;
-    var file = try std.fs.cwd().openFile("./testdata/now", .{});
+    var file = try std.fs.cwd().openFile("./fuzz/testdata/now", .{});
     defer file.close();
 
     var size = try file.readAll(&buf);
@@ -49,7 +49,7 @@ fn getNow() !datetime.Datetime {
 }
 
 fn fuzzTest(now: datetime.Datetime) !usize {
-    var file = try std.fs.cwd().openFile("./testdata/cases", .{});
+    var file = try std.fs.cwd().openFile("./fuzz/testdata/cases", .{});
     defer file.close();
 
     var buf_reader = std.io.bufferedReader(file.reader());
