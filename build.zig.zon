@@ -3,8 +3,8 @@
     .version = "0.1.0",
     .dependencies = .{
         .datetime = .{
-            .url = "https://github.com/frmdstryr/zig-datetime/archive/ddecb4e508e99ad6ab1314378225413959d54756.tar.gz",
-            .hash = "12202cbb909feb6b09164ac997307c6b1ab35cb05a846198cf41f7ec608d842c1761",
+            .url = "https://github.com/frmdstryr/zig-datetime/archive/fa702ed9979a98532b2973c123a1734f795629d0.tar.gz",
+            .hash = "1220209352d22a38b0ec94f5bc1ab95dce7d77be65ed3f1d31b9cc58292e6279406b",
         }
     },
     .paths = .{""},
