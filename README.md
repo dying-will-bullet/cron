@@ -3,7 +3,7 @@
 [![CI](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml/badge.svg)](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml)
 ![](https://img.shields.io/badge/language-zig-%23ec915c)
 
-**NOTE: Minimum Supported Zig Version is 0.11.**
+**NOTE: Minimum Supported Zig Version is 0.12.**
 
 This library aims to provide a way to parse crontab schedule entries and determine the next execution time.
 
