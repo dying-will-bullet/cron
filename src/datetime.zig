@@ -168,7 +168,7 @@ pub fn NextYear(dt: datetime.Datetime) !datetime.Datetime {
 }
 
 pub fn PrevDay(dt: datetime.Datetime) !datetime.Datetime {
-    var tdt = dt.shiftDays(-1);
+    const tdt = dt.shiftDays(-1);
     var ndt = dt.shiftDays(-1);
     while (tdt.date.month == ndt.date.month) {
         ndt = ndt.shiftDays(-1);

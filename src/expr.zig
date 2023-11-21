@@ -215,7 +215,7 @@ pub const CronField = struct {
             return set;
         }
 
-        var right = BitSet.initEmpty();
+        const right = BitSet.initEmpty();
 
         var first = end + step;
         var i = end;
@@ -252,8 +252,8 @@ pub const CronField = struct {
 
         // e.g. minute => 0 ~ 60
         const range = tag.getRange();
-        var range_start = range[0];
-        var range_end = range[1];
+        const range_start = range[0];
+        const range_end = range[1];
 
         var end_limit = range_end;
         actual_end.* = range_end;
