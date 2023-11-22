@@ -3,7 +3,7 @@
     .version = "0.1.0",
     .dependencies = .{
         .datetime = .{
-            .url = "https://github.com/Hanaasagi/zig-datetime/archive/d61796365c802f58bcec268924e6074628b43bf7.tar.gz",
+            .url = "https://github.com/frmdstryr/zig-datetime/archive/master.tar.gz",
             .hash = "12206379a2526c6a70a6501b33a06ad2d63794f55b4a1beaf2dec3f4d0a24b815341"
         }
     },
