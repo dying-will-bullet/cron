@@ -20,23 +20,8 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
-        .name = "cron",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = .{ .path = "src/lib.zig" },
-        .target = target,
-        .optimize = optimize,
-    });
-
     const opts = .{ .target = target, .optimize = optimize };
     const datetime_module = b.dependency("datetime", opts).module("zig-datetime");
-    lib.addModule("datetime", datetime_module);
-
-    // This declares intent for the library to be installed into the standard
-    // location when the user invokes the "install" step (the default step when
-    // running `zig build`).
-    b.installArtifact(lib);
 
     const mod = b.addModule("cron", .{
         .source_file = .{ .path = "src/lib.zig" },
