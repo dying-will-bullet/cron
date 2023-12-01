@@ -39,18 +39,18 @@ pub const Cron = struct {
 
         var length: usize = undefined;
         if (total_field == 5) {
-            std.mem.copy(u8, self.buf[0..2], "0 ");
-            std.mem.copy(u8, self.buf[2..], cron_expr);
-            std.mem.copy(u8, self.buf[cron_expr.len + 2 ..], " *");
+            @memcpy(self.buf[0..2], "0 ");
+            @memcpy(self.buf[2 .. 2 + cron_expr.len], cron_expr);
+            @memcpy(self.buf[cron_expr.len + 2 .. cron_expr.len + 2 + " *".len], " *");
             total_field += 2;
             length = 2 + cron_expr.len + 2;
         } else if (total_field == 6) {
-            std.mem.copy(u8, self.buf[0..2], "0 ");
-            std.mem.copy(u8, self.buf[2..], cron_expr);
+            @memcpy(self.buf[0..2], "0 ");
+            @memcpy(self.buf[2 .. 2 + cron_expr.len], cron_expr);
             total_field += 1;
             length = 2 + cron_expr.len;
         } else {
-            std.mem.copy(u8, self.buf[0..], cron_expr);
+            @memcpy(self.buf[0..cron_expr.len], cron_expr);
             length = cron_expr.len;
         }
 
