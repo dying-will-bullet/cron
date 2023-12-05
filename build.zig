@@ -38,6 +38,16 @@ pub fn build(b: *std.Build) void {
     // running `zig build`).
     b.installArtifact(lib);
 
+    // Docs
+    const docs_step = b.step("docs", "Emit docs");
+    const docs_install = b.addInstallDirectory(.{
+        .source_dir = lib.getEmittedDocs(),
+        .install_dir = .prefix,
+        .install_subdir = "docs",
+    });
+    docs_step.dependOn(&docs_install.step);
+    b.default_step.dependOn(docs_step);
+
     const mod = b.addModule("cron", .{
         .source_file = .{ .path = "src/lib.zig" },
         .dependencies = &.{.{ .name = "datetime", .module = datetime_module }},

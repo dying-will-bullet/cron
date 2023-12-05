@@ -13,12 +13,49 @@ const BitSet = std.bit_set.IntegerBitSet(130);
 
 const LEN = 48;
 
+/// A sturct for parsing cron strings and calculating next and previous execution datetimes.
+/// Example:
+/// ```zig
+/// const std = @import("std");
+/// const Cron = @import("cron").Cron;
+/// const datetime = @import("datetime").datetime;
+///
+/// fn job1(i: usize) !void {
+///     const now = datetime.Datetime.now();
+///
+///     var buf: [64]u8 = undefined;
+///     const dt_str = try now.formatISO8601Buf(&buf, false);
+///     std.log.info("{s} {d}th execution", .{ dt_str, i });
+/// }
+///
+/// pub fn main() !void {
+///     var c = Cron.init();
+///     // At every minute.
+///     try c.parse("*/1 * * * *");
+///
+///     for (0..5) |i| {
+///         const now = datetime.Datetime.now();
+///
+///         // Get the next run time
+///         const next_dt = try c.next(now);
+///         const duration = next_dt.sub(now);
+///         // convert to nanoseconds
+///         const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
+///
+///         // wait next
+///         std.time.sleep(@intCast(nanos));
+///
+///         try job1(i + 1);
+///     }
+/// }
+/// ```
 pub const Cron = struct {
     buf: [LEN]u8,
     expr: CronExpr,
 
     const Self = @This();
 
+    /// Initialize cron
     pub fn init() Self {
         return Self{
             .buf = undefined,
@@ -26,6 +63,7 @@ pub const Cron = struct {
         };
     }
 
+    /// Parse cron expression
     pub fn parse(self: *Self, input: []const u8) !void {
         var buf_: [LEN]u8 = undefined;
         const lower_input = std.ascii.lowerString(&buf_, input);
@@ -156,6 +194,7 @@ pub const Cron = struct {
         unreachable;
     }
 
+    /// Calculates and returns the datetime of the next scheduled execution based on the parsed cron schedule and the provided starting datetime.
     pub fn next(self: *Self, now: datetime.Datetime) !datetime.Datetime {
         // reset nanoseconds
         var future = now.shift(.{ .nanoseconds = -@as(i32, @intCast(now.time.nanosecond)) }).shiftSeconds(1);
@@ -221,6 +260,7 @@ pub const Cron = struct {
         return future;
     }
 
+    /// Calculates and returns the datetime of the most recent past scheduled execution based on the parsed cron schedule and the provided starting datetime.
     pub fn previous(self: *Self, now: datetime.Datetime) !datetime.Datetime {
         // reset nanoseconds
         var future = now.shift(.{ .nanoseconds = -@as(i32, @intCast(now.time.nanosecond)) }).shiftSeconds(-1);
