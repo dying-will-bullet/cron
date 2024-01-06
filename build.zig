@@ -31,7 +31,8 @@ pub fn build(b: *std.Build) void {
 
     const opts = .{ .target = target, .optimize = optimize };
     const datetime_module = b.dependency("datetime", opts).module("zig-datetime");
-    lib.addModule("datetime", datetime_module);
+    lib.root_module.addImport("datetime", datetime_module);
+    // lib.addModule("datetime", datetime_module);
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
@@ -49,8 +50,8 @@ pub fn build(b: *std.Build) void {
     b.default_step.dependOn(docs_step);
 
     const mod = b.addModule("cron", .{
-        .source_file = .{ .path = "src/lib.zig" },
-        .dependencies = &.{.{ .name = "datetime", .module = datetime_module }},
+        .root_source_file = .{ .path = "src/lib.zig" },
+        .imports = &.{.{ .name = "datetime", .module = datetime_module }},
     });
 
     // Creates a step for unit testing. This only builds the test executable
@@ -60,7 +61,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    main_tests.addModule("datetime", datetime_module);
+    main_tests.root_module.addImport("datetime", datetime_module);
 
     const run_main_tests = b.addRunArtifact(main_tests);
 
@@ -84,8 +85,8 @@ pub fn build(b: *std.Build) void {
             .optimize = optimize,
         });
 
-        exe.addModule("cron", mod);
-        exe.addModule("datetime", datetime_module);
+        exe.root_module.addImport("cron", mod);
+        exe.root_module.addImport("datetime", datetime_module);
 
         b.installArtifact(exe);
 
@@ -103,8 +104,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-    fuzz_exe.addModule("cron", mod);
-    fuzz_exe.addModule("datetime", datetime_module);
+    fuzz_exe.root_module.addImport("cron", mod);
+    fuzz_exe.root_module.addImport("datetime", datetime_module);
 
     b.installArtifact(fuzz_exe);
 
