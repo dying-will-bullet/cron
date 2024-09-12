@@ -24,7 +24,7 @@ pub fn build(b: *std.Build) void {
         .name = "cron",
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
-        .root_source_file = .{ .path = "src/lib.zig" },
+        .root_source_file = b.path("src/lib.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -50,14 +50,14 @@ pub fn build(b: *std.Build) void {
     b.default_step.dependOn(docs_step);
 
     const mod = b.addModule("cron", .{
-        .root_source_file = .{ .path = "src/lib.zig" },
+        .root_source_file = b.path("src/lib.zig"),
         .imports = &.{.{ .name = "datetime", .module = datetime_module }},
     });
 
     // Creates a step for unit testing. This only builds the test executable
     // but does not run it.
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/lib.zig" },
+        .root_source_file = b.path("src/lib.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -80,7 +80,7 @@ pub fn build(b: *std.Build) void {
 
         const exe = b.addExecutable(.{
             .name = exe_name,
-            .root_source_file = .{ .path = example_path },
+            .root_source_file = b.path(example_path),
             .target = target,
             .optimize = optimize,
         });
@@ -100,7 +100,7 @@ pub fn build(b: *std.Build) void {
     // Build fuzz
     const fuzz_exe = b.addExecutable(.{
         .name = "fuzz",
-        .root_source_file = .{ .path = "./fuzz/fuzz.zig" },
+        .root_source_file = b.path("./fuzz/fuzz.zig"),
         .target = target,
         .optimize = optimize,
     });

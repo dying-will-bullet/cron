@@ -3,9 +3,9 @@
     .version = "0.1.0",
     .dependencies = .{
         .datetime = .{
-            .url = "https://github.com/frmdstryr/zig-datetime/archive/master.tar.gz",
-            .hash = "122038b4b5df08d2af6daf81e5f18d4c244d807c9323224db826cc107ce3894f6fa9"
-        }
+            .url = "https://github.com/frmdstryr/zig-datetime/archive/70aebf28fb3e137cd84123a9349d157a74708721.tar.gz",
+            .hash = "122077215ce36e125a490e59ec1748ffd4f6ba00d4d14f7308978e5360711d72d77f",
+        },
     },
     .paths = .{""},
 }
