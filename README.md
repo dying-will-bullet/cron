@@ -89,9 +89,9 @@ Because `cron` needs to be used together with `datetime`, you need to add both o
            .hash = "1220f3f1e6659f434657452f4727889a2424c1b78ac88775bd1f036858a1e974ad41",
        },
        .datetime = .{
-           .url = "https://github.com/frmdstryr/zig-datetime/archive/ddecb4e508e99ad6ab1314378225413959d54756.tar.gz",
-           .hash = "12202cbb909feb6b09164ac997307c6b1ab35cb05a846198cf41f7ec608d842c1761",
-       }
+            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#4d0e84cd8844c0672e0cbe247a3130750c9e0f27",
+            .hash = "datetime-0.8.0-cJNXzJSJAQB5RKwPglxoEq875GmehZoLjuAlKzvWp4_O",
+        },
     },
 }
 ```

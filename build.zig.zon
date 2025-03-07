@@ -1,10 +1,11 @@
 .{
-    .name = "cron",
+    .name = .cron,
+    .fingerprint = 0x17cd00f8c4ea808e,
     .version = "0.1.0",
     .dependencies = .{
         .datetime = .{
-            .url = "https://github.com/frmdstryr/zig-datetime/archive/70aebf28fb3e137cd84123a9349d157a74708721.tar.gz",
-            .hash = "122077215ce36e125a490e59ec1748ffd4f6ba00d4d14f7308978e5360711d72d77f",
+            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#4d0e84cd8844c0672e0cbe247a3130750c9e0f27",
+            .hash = "datetime-0.8.0-cJNXzJSJAQB5RKwPglxoEq875GmehZoLjuAlKzvWp4_O",
         },
     },
     .paths = .{""},

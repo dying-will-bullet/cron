@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const opts = .{ .target = target, .optimize = optimize };
-    const datetime_module = b.dependency("datetime", opts).module("zig-datetime");
+    const datetime_module = b.dependency("datetime", opts).module("datetime");
     lib.root_module.addImport("datetime", datetime_module);
     // lib.addModule("datetime", datetime_module);
 
