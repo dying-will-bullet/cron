@@ -3,7 +3,7 @@
 [![CI](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml/badge.svg)](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml)
 ![](https://img.shields.io/badge/language-zig-%23ec915c)
 
-**NOTE: Minimum Supported Zig Version is 0.12.**
+**NOTE: The minimum supported Zig version for the current master branch is 0.14.**
 
 This library aims to provide a way to parse crontab schedule entries and determine the next execution time.
 
@@ -75,7 +75,11 @@ pub fn main() !void {
 }
 ```
 
-## Installation
+## Installation For Zig 0.14
+
+Please refer to the latest Zig package documentation.
+
+## Installation For Zig 0.11
 
 Because `cron` needs to be used together with `datetime`, you need to add both of the following dependencies in `build.zig.zon`:
 
