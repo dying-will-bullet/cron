@@ -69,7 +69,7 @@ pub const Cron = struct {
         const lower_input = std.ascii.lowerString(&buf_, input);
         const cron_expr = self.convertAlias(lower_input);
 
-        var it = std.mem.split(u8, cron_expr, " ");
+        var it = std.mem.splitSequence(u8, cron_expr, " ");
         var total_field: u3 = 0;
         while (it.next()) |_| {
             total_field += 1;
@@ -99,7 +99,7 @@ pub const Cron = struct {
         var i: u4 = 0;
         var fields: [7]CronField = undefined;
 
-        it = std.mem.split(u8, self.buf[0..length], " ");
+        it = std.mem.splitSequence(u8, self.buf[0..length], " ");
         while (it.next()) |entry| {
             const tag = try std.meta.intToEnum(FieldTag, i);
             const field = try CronField.init(tag, entry);
@@ -120,12 +120,12 @@ pub const Cron = struct {
         return;
     }
 
-    /// handle crontab alias
-    /// @yearly (or @annually) 	Run once a year at midnight of 1 January 	0 0 1 1 *
-    /// @monthly 	Run once a month at midnight of the first day of the month 	0 0 1 * *
-    /// @weekly 	Run once a week at midnight on Sunday morning 	0 0 * * 0
-    /// @daily (or @midnight) 	Run once a day at midnight 	0 0 * * *
-    /// @hourly 	Run once an hour at the beginning of the hour 	0 * * * *
+    // handle crontab alias
+    // @yearly (or @annually) Run once a year at midnight of 1 January 0 0 1 1 *
+    // @monthly Run once a month at midnight of the first day of the month 0 0 1 * *
+    // @weekly Run once a week at midnight on Sunday morning 0 0 * * 0
+    // @daily (or @midnight) Run once a day at midnight 0 0 * * *
+    // @hourly Run once an hour at the beginning of the hour 0 * * * *
     fn convertAlias(self: Self, expr: []const u8) []const u8 {
         _ = self;
         if (std.mem.eql(u8, expr, "@yearly")) {

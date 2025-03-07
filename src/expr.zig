@@ -111,7 +111,7 @@ pub const CronField = struct {
         var end: u16 = undefined;
         var has_wildcard = false;
 
-        var it = std.mem.split(u8, text, ",");
+        var it = std.mem.splitSequence(u8, text, ",");
         while (it.next()) |e| {
             if (std.mem.eql(u8, e, "*") or std.mem.eql(u8, e, "?")) {
                 has_wildcard = true;
@@ -329,7 +329,7 @@ pub const CronField = struct {
             return true;
         }
 
-        var it = std.mem.split(u8, self.text, ",");
+        var it = std.mem.splitSequence(u8, self.text, ",");
 
         while (it.next()) |x| {
             if (std.mem.eql(u8, x, "l")) {
