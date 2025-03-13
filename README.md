@@ -79,7 +79,7 @@ pub fn main() !void {
 
 Please refer to the latest Zig package documentation.
 ```
-zig fetch --save=cron git+https://github.com/dying-will-bullet/cron?ref=master#447a621f3f79f80e4f42ab3ad5d39ccf3f368ec5
+zig fetch --save=cron git+https://github.com/dying-will-bullet/cron#master
 ```
 
 ```
