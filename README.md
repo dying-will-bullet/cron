@@ -78,6 +78,13 @@ pub fn main() !void {
 ## Installation For Zig 0.14
 
 Please refer to the latest Zig package documentation.
+```
+zig fetch --save=cron git+https://github.com/dying-will-bullet/cron?ref=master#447a621f3f79f80e4f42ab3ad5d39ccf3f368ec5
+```
+
+```
+zig fetch --save=datetime git+https://github.com/frmdstryr/zig-datetime?ref=master#52d4fbe43a758589b74411ffec8ebcb1f12e2d13
+```
 
 ## Installation For Zig 0.11
 
@@ -85,8 +92,9 @@ Because `cron` needs to be used together with `datetime`, you need to add both o
 
 ```
 .{
-    .name = "my-project",
+    .name = my_project,
     .version = "0.1.0",
+    .fingerprint = xxxxxxxxxxxxxxx,
     .dependencies = .{
        .cron = .{
            .url = "https://github.com/dying-will-bullet/cron/archive/refs/tags/v0.2.0.tar.gz",
