@@ -78,6 +78,13 @@ pub fn main() !void {
 ## Installation For Zig 0.14
 
 Please refer to the latest Zig package documentation.
+```
+zig fetch --save=cron git+https://github.com/dying-will-bullet/cron#master
+```
+
+```
+zig fetch --save=datetime git+https://github.com/frmdstryr/zig-datetime?ref=master#52d4fbe43a758589b74411ffec8ebcb1f12e2d13
+```
 
 ## Installation For Zig 0.11
 
@@ -85,16 +92,17 @@ Because `cron` needs to be used together with `datetime`, you need to add both o
 
 ```
 .{
-    .name = "my-project",
+    .name = my_project,
     .version = "0.1.0",
+    .fingerprint = xxxxxxxxxxxxxxx,
     .dependencies = .{
        .cron = .{
            .url = "https://github.com/dying-will-bullet/cron/archive/refs/tags/v0.2.0.tar.gz",
            .hash = "1220f3f1e6659f434657452f4727889a2424c1b78ac88775bd1f036858a1e974ad41",
        },
        .datetime = .{
-            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#4d0e84cd8844c0672e0cbe247a3130750c9e0f27",
-            .hash = "datetime-0.8.0-cJNXzJSJAQB5RKwPglxoEq875GmehZoLjuAlKzvWp4_O",
+            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#52d4fbe43a758589b74411ffec8ebcb1f12e2d13",
+            .hash = "datetime-0.8.0-cJNXzNiMAQBz4RV6Gz7qUNeE-xLDNLs_jNU5_zIZ48as",
         },
     },
 }
