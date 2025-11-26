@@ -140,7 +140,7 @@ pub const CronField = struct {
         }
         // others
         if (!isDigit(text)) {
-            log.err("InvalidValue: {s} field has invalid value {d} ", .{ tag.toName(), text });
+            log.err("InvalidValue: {s} field has invalid value '{s}'", .{ tag.toName(), text });
             return Error.InvalidValue;
         }
 

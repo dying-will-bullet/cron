@@ -4,8 +4,8 @@
     .version = "0.3.0",
     .dependencies = .{
         .datetime = .{
-            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#b8dcd4948ac1dc29694a4d79794921121426981b",
-            .hash = "datetime-0.8.0-cJNXzPXXAQBatvf9tYfTS2FMKMKNGM7zJnxmetb6AWJy",
+            .url = "git+https://github.com/frmdstryr/zig-datetime?ref=master#3a39a21e6e34dcb0ade0ff828d0914d40ba535f3",
+            .hash = "datetime-0.8.0-cJNXzP_YAQBxQ5hkNNP6ScnG5XsqciJmeP5RVV4xwCBA",
         },
     },
     .paths = .{""},

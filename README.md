@@ -3,7 +3,7 @@
 [![CI](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml/badge.svg)](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml)
 ![](https://img.shields.io/badge/language-zig-%23ec915c)
 
-**NOTE: The minimum supported Zig version for the current master branch is 0.14.**
+**NOTE: The minimum supported Zig version for the current master branch is 0.15.2.**
 
 This library aims to provide a way to parse crontab schedule entries and determine the next execution time.
 
@@ -68,7 +68,7 @@ pub fn main() !void {
         const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
 
         // wait next
-        std.time.sleep(@intCast(nanos));
+        std.Thread.sleep(@intCast(nanos));
 
         try job1(i + 1);
     }

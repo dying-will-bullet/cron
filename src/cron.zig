@@ -43,7 +43,7 @@ const LEN = 48;
 ///         const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
 ///
 ///         // wait next
-///         std.time.sleep(@intCast(nanos));
+///         std.Thread.sleep(@intCast(nanos));
 ///
 ///         try job1(i + 1);
 ///     }

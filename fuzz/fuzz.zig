@@ -52,12 +52,11 @@ fn fuzzTest(now: datetime.Datetime) !usize {
     var file = try std.fs.cwd().openFile("./fuzz/testdata/cases", .{});
     defer file.close();
 
-    var buf_reader = std.io.bufferedReader(file.reader());
-    var in_stream = buf_reader.reader();
+    var reader_buffer: [1024]u8 = undefined;
+    var reader = file.reader(&reader_buffer);
 
-    var buf: [1024]u8 = undefined;
     var count: usize = 0;
-    while (try in_stream.readUntilDelimiterOrEof(&buf, '\n')) |line| {
+    while (try reader.interface.takeDelimiter('\n')) |line| {
         if (std.mem.indexOf(u8, line, "|")) |i| {
             const cron_expr = line[0..i];
             const expect_dt = line[i + 1 ..];

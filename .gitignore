@@ -10,6 +10,7 @@
 # -andrewrk
 
 .zig-cache/
+.zig-global-cache/
 zig-out/
 /release/
 /debug/

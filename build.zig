@@ -1,5 +1,4 @@
 const std = @import("std");
-const Pkg = std.build.Pkg;
 
 const examples = .{
     "scheduler",
@@ -20,19 +19,22 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
-        .name = "cron",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
+    const opts = .{ .target = target, .optimize = optimize };
+    const datetime_module = b.dependency("datetime", opts).module("datetime");
+
+    const cron_module = b.addModule("cron", .{
         .root_source_file = b.path("src/lib.zig"),
         .target = target,
         .optimize = optimize,
+        .imports = &.{
+            .{ .name = "datetime", .module = datetime_module },
+        },
     });
 
-    const opts = .{ .target = target, .optimize = optimize };
-    const datetime_module = b.dependency("datetime", opts).module("datetime");
-    lib.root_module.addImport("datetime", datetime_module);
-    // lib.addModule("datetime", datetime_module);
+    const lib = b.addLibrary(.{
+        .name = "cron",
+        .root_module = cron_module,
+    });
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
@@ -49,19 +51,11 @@ pub fn build(b: *std.Build) void {
     docs_step.dependOn(&docs_install.step);
     b.default_step.dependOn(docs_step);
 
-    const mod = b.addModule("cron", .{
-        .root_source_file = b.path("src/lib.zig"),
-        .imports = &.{.{ .name = "datetime", .module = datetime_module }},
-    });
-
     // Creates a step for unit testing. This only builds the test executable
     // but does not run it.
     const main_tests = b.addTest(.{
-        .root_source_file = b.path("src/lib.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = cron_module,
     });
-    main_tests.root_module.addImport("datetime", datetime_module);
 
     const run_main_tests = b.addRunArtifact(main_tests);
 
@@ -80,13 +74,16 @@ pub fn build(b: *std.Build) void {
 
         const exe = b.addExecutable(.{
             .name = exe_name,
-            .root_source_file = b.path(example_path),
-            .target = target,
-            .optimize = optimize,
+            .root_module = b.createModule(.{
+                .root_source_file = b.path(example_path),
+                .target = target,
+                .optimize = optimize,
+                .imports = &.{
+                    .{ .name = "cron", .module = cron_module },
+                    .{ .name = "datetime", .module = datetime_module },
+                },
+            }),
         });
-
-        exe.root_module.addImport("cron", mod);
-        exe.root_module.addImport("datetime", datetime_module);
 
         b.installArtifact(exe);
 
@@ -100,12 +97,16 @@ pub fn build(b: *std.Build) void {
     // Build fuzz
     const fuzz_exe = b.addExecutable(.{
         .name = "fuzz",
-        .root_source_file = b.path("./fuzz/fuzz.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("./fuzz/fuzz.zig"),
+            .target = target,
+            .optimize = optimize,
+            .imports = &.{
+                .{ .name = "cron", .module = cron_module },
+                .{ .name = "datetime", .module = datetime_module },
+            },
+        }),
     });
-    fuzz_exe.root_module.addImport("cron", mod);
-    fuzz_exe.root_module.addImport("datetime", datetime_module);
 
     b.installArtifact(fuzz_exe);
 
