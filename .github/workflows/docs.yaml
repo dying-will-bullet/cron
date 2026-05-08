@@ -19,9 +19,11 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Zig
-        uses: goto-bus-stop/setup-zig@v2
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.16.0
       - name: Generate docs
         run: |
           zig build docs

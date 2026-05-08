@@ -2,30 +2,28 @@ const std = @import("std");
 const Cron = @import("cron").Cron;
 const datetime = @import("datetime").datetime;
 
-fn job1(i: usize) !void {
-    const now = datetime.Datetime.now();
-
-    var buf: [64]u8 = undefined;
-    const dt_str = try now.formatISO8601Buf(&buf, false);
-    std.log.info("{s} {d}th execution", .{ dt_str, i });
+fn currentDatetime(io: std.Io) datetime.Datetime {
+    const timestamp = std.Io.Timestamp.now(io, .real);
+    const seconds: f64 = @floatFromInt(timestamp.toSeconds());
+    return datetime.Datetime.fromSeconds(seconds);
 }
 
-pub fn main() !void {
+fn job1(i: usize, dt: datetime.Datetime) !void {
+    var buf: [64]u8 = undefined;
+    const dt_str = try dt.formatISO8601Buf(&buf, false);
+    std.log.info("{s} {d}th scheduled execution", .{ dt_str, i });
+}
+
+pub fn main(init: std.process.Init) !void {
     var c = Cron.init();
     // At every minute.
     try c.parse("*/1 * * * *");
 
+    var now = currentDatetime(init.io);
     for (0..5) |i| {
-        const now = datetime.Datetime.now();
-
         // Get the next run time
         const next_dt = try c.next(now);
-        const duration = next_dt.sub(now);
-        const nanos = duration.totalSeconds() * std.time.ns_per_s + duration.nanoseconds;
-
-        // wait next
-        std.Thread.sleep(@as(u64, @intCast(nanos)));
-
-        try job1(i + 1);
+        try job1(i + 1, next_dt);
+        now = next_dt;
     }
 }
