@@ -31,4 +31,4 @@ jobs:
       - name: Run Tests
         run: zig build test
       - name: Run Fuzz Tests
-        run: zig build run-fuzz
+        run: (cd ./fuzz && bash setup.sh && python gen.py) && zig build run-fuzz
