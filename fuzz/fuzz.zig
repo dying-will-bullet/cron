@@ -18,7 +18,7 @@ fn formatDatetime(buf: []u8, dt: datetime.Datetime) ![]const u8 {
     );
 }
 
-fn strToDatetime(buf: []u8) !datetime.Datetime {
+fn strToDatetime(buf: []const u8) !datetime.Datetime {
     const year = try std.fmt.parseInt(u32, buf[0..4], 10);
     const month = try std.fmt.parseInt(u32, buf[5..7], 10);
     const day = try std.fmt.parseInt(u32, buf[8..10], 10);
@@ -29,34 +29,30 @@ fn strToDatetime(buf: []u8) !datetime.Datetime {
     return dt;
 }
 
-fn getNow() !datetime.Datetime {
-    var buf: [64]u8 = undefined;
-    var file = try std.fs.cwd().openFile("./fuzz/testdata/now", .{});
-    defer file.close();
+fn getNow(io: std.Io, allocator: std.mem.Allocator) !datetime.Datetime {
+    const contents = try std.Io.Dir.cwd().readFileAlloc(io, "./fuzz/testdata/now", allocator, .limited(1024));
+    defer allocator.free(contents);
 
-    var size = try file.readAll(&buf);
-    if (size == 0) {
+    const line = std.mem.trimEnd(u8, contents, "\r\n");
+    if (line.len == 0) {
         return error.InvalidSize;
     }
-
-    if (size > 0 and buf[size - 1] == '\n') {
-        size -= 1;
-    }
-    log.info("NOW is {s}", .{buf[0..size]});
-    const dt = strToDatetime(&buf);
+    log.info("NOW is {s}", .{line});
+    const dt = try strToDatetime(line);
 
     return dt;
 }
 
-fn fuzzTest(now: datetime.Datetime) !usize {
-    var file = try std.fs.cwd().openFile("./fuzz/testdata/cases", .{});
-    defer file.close();
-
-    var reader_buffer: [1024]u8 = undefined;
-    var reader = file.reader(&reader_buffer);
+fn fuzzTest(io: std.Io, allocator: std.mem.Allocator, now: datetime.Datetime) !usize {
+    const contents = try std.Io.Dir.cwd().readFileAlloc(io, "./fuzz/testdata/cases", allocator, .limited(1024 * 1024));
+    defer allocator.free(contents);
 
     var count: usize = 0;
-    while (try reader.interface.takeDelimiter('\n')) |line| {
+    var lines = std.mem.splitScalar(u8, contents, '\n');
+    while (lines.next()) |raw_line| {
+        const line = std.mem.trimEnd(u8, raw_line, "\r");
+        if (line.len == 0) continue;
+
         if (std.mem.indexOf(u8, line, "|")) |i| {
             const cron_expr = line[0..i];
             const expect_dt = line[i + 1 ..];
@@ -83,9 +79,9 @@ fn fuzzTest(now: datetime.Datetime) !usize {
     return count;
 }
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
     log.info("Fuzzing...", .{});
-    const now = try getNow();
-    const total = try fuzzTest(now);
+    const now = try getNow(init.io, init.gpa);
+    const total = try fuzzTest(init.io, init.gpa, now);
     log.info("Success... Total {d}", .{total});
 }
