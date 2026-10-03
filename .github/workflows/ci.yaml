@@ -20,7 +20,7 @@ jobs:
           submodules: "recursive"
       - uses: mlugg/setup-zig@v2
         with:
-          version: 0.16.0
+          version: 0.17.0
       - uses: Hanaasagi/zig-action-cache@master
         with:
           cache-on-failure: true

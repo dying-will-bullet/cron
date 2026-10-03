@@ -9,7 +9,7 @@ const CronExpr = @import("./expr.zig").CronExpr;
 const CronField = @import("./expr.zig").CronField;
 const FieldTag = @import("./expr.zig").FieldTag;
 // TODO: optimize this data structure
-const BitSet = std.bit_set.IntegerBitSet(130);
+const BitSet = std.bit_set.Integer(130);
 
 const LEN = 48;
 

@@ -7,7 +7,7 @@ const isDigit = @import("./utils.zig").isDigit;
 
 // TODO: optimise
 // 16.25 bytes ?
-const BitSet = std.bit_set.IntegerBitSet(130);
+const BitSet = std.bit_set.Integer(130);
 
 const EPOCH = 1970;
 
@@ -107,7 +107,7 @@ pub const CronField = struct {
     const Self = @This();
 
     pub fn init(tag: FieldTag, text: []const u8) !Self {
-        var allowed = BitSet.initEmpty();
+        var allowed = BitSet.empty;
         var end: u16 = undefined;
         var has_wildcard = false;
 
@@ -156,7 +156,7 @@ pub const CronField = struct {
     fn parseValue(tag: FieldTag, text: []const u8, range_start: u16, range_end: u16, increment: ?u8, end_limit: u16) !BitSet {
         var entry = text;
 
-        var set = BitSet.initEmpty();
+        var set = BitSet.empty;
         var start: u16 = 0;
         var end: u16 = 0;
 
@@ -215,7 +215,7 @@ pub const CronField = struct {
             return set;
         }
 
-        const right = BitSet.initEmpty();
+        const right = BitSet.empty;
 
         var first = end + step;
         var i = end;
@@ -358,7 +358,7 @@ pub const CronField = struct {
 
                 const start = try std.fmt.parseInt(u16, x[1 .. k + 1], 10);
                 const end = try std.fmt.parseInt(u16, x[k + 1 + 1 ..], 10);
-                var allowed = BitSet.initEmpty();
+                var allowed = BitSet.empty;
                 var j = start;
                 while (j < end + 1) {
                     allowed.set(j);

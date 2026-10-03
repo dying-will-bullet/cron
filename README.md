@@ -3,7 +3,7 @@
 [![CI](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml/badge.svg)](https://github.com/dying-will-bullet/cron/actions/workflows/ci.yaml)
 ![](https://img.shields.io/badge/language-zig-%23ec915c)
 
-**NOTE: The minimum supported Zig version for the current master branch is 0.16.0.**
+**NOTE: The minimum supported Zig version for the current master branch is 0.17.0.**
 
 This library aims to provide a way to parse crontab schedule entries and determine the next execution time.
 
@@ -72,13 +72,17 @@ pub fn main(init: std.process.Init) !void {
 }
 ```
 
-## Installation For Zig 0.16
+## Installation For Zig 0.17
 
 Please refer to the latest Zig package documentation.
 
 ```
 zig fetch --save=cron git+https://github.com/dying-will-bullet/cron#master
 ```
+
+## Installation For Zig 0.16.0
+
+Please see the `feat-zig-0.16.0` branch.
 
 ## Installation For Zig 0.15.2
 
